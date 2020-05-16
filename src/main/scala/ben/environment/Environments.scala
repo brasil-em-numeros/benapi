@@ -1,7 +1,9 @@
 package ben.environment
 
 import ben.environment.config.Configuration
-import ben.environment.repository.despesaspublicas.DespesasPublicasExecucaoStorage.DespesasPublicasExecucaoStorage
+import ben.environment.repository.DbTransactor
+import ben.environment.repository.despesaspublicas.DespesasPublicasExecucaoStorage
+import zio.{ULayer, ZLayer}
 import zio.clock.Clock
 
 object Environments {
@@ -14,4 +16,15 @@ object Environments {
     Clock
       with Configuration
       with DespesasPublicasExecucaoStorage
+
+  val httpServerEnvironment: ULayer[HttpServerEnvironment] =
+    Configuration.live ++ Clock.live
+
+  val dbTransactor: ULayer[DbTransactor] = Configuration.live >>> DbTransactor.live
+
+  val despesasPublicasExecucaoStorage: ULayer[DespesasPublicasExecucaoStorage] =
+    dbTransactor >>> DespesasPublicasExecucaoStorage.doobie
+
+  val appEnvironment: ULayer[AppEnvironment] =
+    httpServerEnvironment ++ despesasPublicasExecucaoStorage
 }

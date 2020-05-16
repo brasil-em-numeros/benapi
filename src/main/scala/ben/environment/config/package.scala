@@ -20,10 +20,11 @@ package object config {
   object Configuration {
     import pureconfig.generic.auto._
 
-    val live: TaskLayer[Configuration] = ZLayer.fromEffectMany(
-      Task
+    val live: ULayer[Configuration] = ZLayer.fromEffectMany(
+      ZIO
         .effect(ConfigSource.default.loadOrThrow[AppConfig])
         .map(c => Has(c.database) ++ Has(c.httpServer))
+        .orDie
     )
   }
 }

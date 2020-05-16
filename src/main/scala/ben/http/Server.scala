@@ -1,7 +1,7 @@
 package ben.http
 
 import ben.environment.config.HttpServerConfig
-import ben.environment.Environments.{DespesasPublicasEnvironment, HttpServerEnvironment}
+import ben.environment.Environments.{AppEnvironment, HttpServerEnvironment}
 import ben.http.endpoints.{DespesasPublicasEndpoint, HealthEndpoint}
 import cats.data.Kleisli
 import cats.effect.ExitCode
@@ -14,11 +14,11 @@ import zio.interop.catz._
 import zio.{RIO, URIO, ZIO}
 
 object Server {
-  type ServerRIO[A] = RIO[HttpServerEnvironment, A]
+  type ServerRIO[A] = RIO[AppEnvironment, A]
   type ServerRoutes = Kleisli[ServerRIO, Request[ServerRIO], Response[ServerRIO]]
 
-  def runServer: URIO[HttpServerEnvironment, Unit] =
-    ZIO.runtime[HttpServerEnvironment].flatMap { implicit rts =>
+  def runServer: ZIO[AppEnvironment, Nothing, Unit] =
+    ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
       val cfg = rts.environment.get[HttpServerConfig]
 
       BlazeServerBuilder[ServerRIO]
@@ -31,8 +31,8 @@ object Server {
     .orDie
 
   def createRoutes(basePath: String): ServerRoutes = {
-    val healthRoutes = new HealthEndpoint[HttpServerEnvironment].routes
-    val despesasPublicasRoutes = new DespesasPublicasEndpoint[HttpServerEnvironment].routes
+    val healthRoutes = new HealthEndpoint[AppEnvironment].routes
+    val despesasPublicasRoutes = new DespesasPublicasEndpoint[AppEnvironment].routes
 
     val openRoutes = healthRoutes <+> despesasPublicasRoutes
 
