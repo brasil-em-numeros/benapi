@@ -7,8 +7,9 @@ package object config {
 
   type Configuration = Has[DbConfig] with Has[HttpServerConfig]
   type ServerConfiguration = Has[HttpServerConfig]
+  type DbConfiguration = Has[DbConfig]
 
-  final case class DbConfig(url: String, user: String, password: String)
+  final case class DbConfig(driver: String, url: String, user: String, password: String)
   final case class HttpServerConfig(host: String, port: Int, path: String)
 
   final case class AppConfig(database: DbConfig, httpServer: HttpServerConfig)
