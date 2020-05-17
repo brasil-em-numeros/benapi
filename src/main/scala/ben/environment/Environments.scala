@@ -3,7 +3,7 @@ package ben.environment
 import ben.environment.config.Configuration
 import ben.environment.repository.DbTransactor
 import ben.environment.repository.despesaspublicas.DespesasPublicasExecucaoStorage
-import zio.{ULayer, ZLayer}
+import zio.ULayer
 import zio.clock.Clock
 
 object Environments {

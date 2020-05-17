@@ -2,14 +2,16 @@ package ben.environment.repository
 
 import ben.domain.DespesaPublicaExecucao
 import zio._
+import zio.macros.accessible
 
 package object despesaspublicas {
 
   type DespesasPublicasExecucaoStorage = Has[DespesasPublicasExecucaoStorage.Service]
 
+  @accessible
   object DespesasPublicasExecucaoStorage {
     trait Service {
-      def all: UIO[List[DespesaPublicaExecucao]]
+      def all: Task[List[DespesaPublicaExecucao]]
     }
 
     val doobie: URLayer[DbTransactor, DespesasPublicasExecucaoStorage] =
@@ -17,7 +19,4 @@ package object despesaspublicas {
         Doobie(dbTransactor.get.xa)
       }
   }
-
-  def findAll: RIO[DespesasPublicasExecucaoStorage, List[DespesaPublicaExecucao]] =
-    RIO.accessM(_.get.all)
 }

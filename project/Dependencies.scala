@@ -6,6 +6,7 @@ object Dependencies {
     val zio            = "1.0.0-RC18-2"
     val zioInteropCats = "2.0.0.0-RC12"
     val zioLogging     = "0.2.7"
+    val zioMacros      = "1.0.0-RC19"
     val http4s         = "0.21.3"
     val circe          = "0.13.0"
     val quill          = "3.5.1"
@@ -24,6 +25,7 @@ object Dependencies {
 
     val zio = zioM("zio")
     val zioStreams = zioM("zio-streams")
+    val zioMacros = "dev.zio" %% "zio-macros" % Versions.zioMacros
     val zioInteropCats = "dev.zio" %% "zio-interop-cats" % Versions.zioInteropCats
     val zioLogging = "dev.zio" %% "zio-logging" % Versions.zioLogging
 

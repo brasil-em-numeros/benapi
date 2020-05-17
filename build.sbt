@@ -13,6 +13,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
         zio,
         zioStreams,
+        zioMacros,
         zioInteropCats,
         zioLogging,
         http4sServer,
@@ -35,8 +36,9 @@ lazy val root = (project in file("."))
     testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
   )
 
-scalacOptions --= Seq(
-    "-Xfatal-warnings"
+scalacOptions ++= Seq(
+    //"-Xfatal-warnings",
+    "-Ymacro-annotations"
 )
 
 addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")

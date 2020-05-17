@@ -23,7 +23,7 @@ final class DespesasPublicasEndpoint[R <: DespesasPublicasExecucaoStorage] {
 
   private val httpRoutes = HttpRoutes.of[DespesasPublicasTask] {
     case GET -> Root =>
-      findAll.foldM(_ => NotFound(), Ok(_))
+      DespesasPublicasExecucaoStorage.all.foldM(_ => NotFound(), Ok(_))
   }
 
   val routes: HttpRoutes[DespesasPublicasTask] = Router(
