@@ -3,32 +3,31 @@ package ben.environment.repository.despesaspublicas
 import ben.domain.DespesaPublicaExecucao
 import ben.environment.repository.despesaspublicas.DespesasPublicasExecucaoStorage.Service
 import doobie.implicits._
-import doobie.util.query.Query0
+import doobie.quill.DoobieContext
 import doobie.util.transactor.Transactor
+import io.getquill._
 import zio.interop.catz._
 import zio.{Task, UIO}
 
 private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends Service {
+  val ctx = new DoobieContext.H2(Literal)
+  import ctx._
+
+  implicit val schema = schemaMeta[DespesaPublicaExecucao]("ExecucaoDespesasPublicas")
+
   def all: UIO[List[DespesaPublicaExecucao]] =
-    Queries
-      .all
-      .to[List]
+    ctx
+      .run(query[DespesaPublicaExecucao])
       .transact(xa)
       .orDie
 
   def byId(id: Long): Task[Option[DespesaPublicaExecucao]] =
-    Queries
-      .byId(id)
-      .option
+    ctx
+      .run(by(id))
       .transact(xa)
-}
+      .map(_.headOption)
 
-private object Queries {
-  val all: Query0[DespesaPublicaExecucao] = sql"""
-      SELECT * FROM ExecucaoDespesasPublicas
-      """.query[DespesaPublicaExecucao]
-
-  def byId(id: Long): Query0[DespesaPublicaExecucao] = sql"""
-      SELECT * FROM ExecucaoDespesasPublicas where id = $id
-      """.query[DespesaPublicaExecucao]
+  private def by(id: Long) = quote {
+    query[DespesaPublicaExecucao].filter(_.id == lift(id))
+  }
 }
