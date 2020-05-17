@@ -11,7 +11,7 @@ import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.Router
 import org.http4s.{Request, Response}
 import zio.interop.catz._
-import zio.{RIO, URIO, ZIO}
+import zio.{RIO, ZIO}
 
 object Server {
   type ServerRIO[A] = RIO[AppEnvironment, A]

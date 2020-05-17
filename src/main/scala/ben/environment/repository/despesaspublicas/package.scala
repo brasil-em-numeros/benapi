@@ -12,6 +12,7 @@ package object despesaspublicas {
   object DespesasPublicasExecucaoStorage {
     trait Service {
       def all: Task[List[DespesaPublicaExecucao]]
+      def byId(id: Long): Task[Option[DespesaPublicaExecucao]]
     }
 
     val doobie: URLayer[DbTransactor, DespesasPublicasExecucaoStorage] =

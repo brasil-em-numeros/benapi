@@ -15,10 +15,20 @@ private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends 
       .to[List]
       .transact(xa)
       .orDie
+
+  def byId(id: Long): Task[Option[DespesaPublicaExecucao]] =
+    Queries
+      .byId(id)
+      .option
+      .transact(xa)
 }
 
 private object Queries {
   val all: Query0[DespesaPublicaExecucao] = sql"""
       SELECT * FROM ExecucaoDespesasPublicas
+      """.query[DespesaPublicaExecucao]
+
+  def byId(id: Long): Query0[DespesaPublicaExecucao] = sql"""
+      SELECT * FROM ExecucaoDespesasPublicas where id = $id
       """.query[DespesaPublicaExecucao]
 }
