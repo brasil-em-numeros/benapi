@@ -1,7 +1,7 @@
 package ben.http
 
 import ben.environment.config.HttpServerConfig
-import ben.environment.Environments.{AppEnvironment, HttpServerEnvironment}
+import ben.environment.Environments.AppEnvironment
 import ben.http.endpoints.{DespesasPublicasEndpoint, HealthEndpoint}
 import cats.data.Kleisli
 import cats.effect.ExitCode

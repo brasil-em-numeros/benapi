@@ -1,4 +1,4 @@
-package ben.environment.repository
+package ben.environment.storage
 
 import ben.domain.DespesaPublicaExecucao
 import zio._

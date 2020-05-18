@@ -1,7 +1,7 @@
-package ben.environment.repository.despesaspublicas
+package ben.environment.storage.despesaspublicas
 
 import ben.domain.DespesaPublicaExecucao
-import ben.environment.repository.despesaspublicas.DespesasPublicasExecucaoStorage.Service
+import ben.environment.storage.despesaspublicas.DespesasPublicasExecucaoStorage.Service
 import doobie.implicits._
 import doobie.quill.DoobieContext
 import doobie.util.transactor.Transactor

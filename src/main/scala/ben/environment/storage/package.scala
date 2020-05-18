@@ -5,7 +5,7 @@ import doobie.util.transactor.Transactor
 import zio._
 import zio.interop.catz._
 
-package object repository {
+package object storage {
 
   type DbTransactor = Has[DbTransactor.Resource]
 
