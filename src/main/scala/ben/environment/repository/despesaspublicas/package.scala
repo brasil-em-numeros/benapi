@@ -11,7 +11,7 @@ package object despesaspublicas {
   @accessible
   object DespesasPublicasExecucaoStorage {
     trait Service {
-      def all: Task[List[DespesaPublicaExecucao]]
+      def all(): fs2.Stream[Task, DespesaPublicaExecucao]
       def byId(id: Long): Task[Option[DespesaPublicaExecucao]]
     }
 

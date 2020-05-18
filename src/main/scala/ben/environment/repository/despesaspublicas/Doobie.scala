@@ -6,8 +6,8 @@ import doobie.implicits._
 import doobie.quill.DoobieContext
 import doobie.util.transactor.Transactor
 import io.getquill._
+import zio.Task
 import zio.interop.catz._
-import zio.{Task, UIO}
 
 private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends Service {
   val ctx = new DoobieContext.H2(Literal)
@@ -15,11 +15,10 @@ private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends 
 
   implicit val schema = schemaMeta[DespesaPublicaExecucao]("ExecucaoDespesasPublicas")
 
-  def all: UIO[List[DespesaPublicaExecucao]] =
+  def all(): fs2.Stream[Task, DespesaPublicaExecucao] =
     ctx
-      .run(query[DespesaPublicaExecucao])
+      .stream(query[DespesaPublicaExecucao])
       .transact(xa)
-      .orDie
 
   def byId(id: Long): Task[Option[DespesaPublicaExecucao]] =
     ctx
