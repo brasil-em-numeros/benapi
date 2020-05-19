@@ -10,6 +10,7 @@ lazy val root = (project in file("."))
     version := "0.0.1",
     scalaVersion := "2.13.1",
     maxErrors := 3,
+    assemblyJarName in assembly := "benapi.jar",
     libraryDependencies ++= Seq(
         zio,
         zioStreams,
@@ -40,6 +41,3 @@ scalacOptions ++= Seq(
     //"-Xfatal-warnings",
     "-Ymacro-annotations"
 )
-
-addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
-addCommandAlias("chk", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
