@@ -12,10 +12,7 @@ object Environments {
 
   type DespesasPublicasEnvironment = HttpServerEnvironment with DespesasPublicasExecucaoStorage
 
-  type AppEnvironment =
-    Clock
-      with Configuration
-      with DespesasPublicasExecucaoStorage
+  type AppEnvironment = Clock with Configuration with DespesasPublicasExecucaoStorage
 
   val httpServerEnvironment: ULayer[HttpServerEnvironment] =
     Configuration.live ++ Clock.live

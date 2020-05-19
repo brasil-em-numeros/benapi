@@ -23,7 +23,7 @@ package object config {
     val live: ULayer[Configuration] = ZLayer.fromEffectMany(
       ZIO
         .effect(ConfigSource.default.loadOrThrow[AppConfig])
-        .map(c => Has(c.database) ++ Has(c.httpServer))
+        .map(c ⇒ Has(c.database) ++ Has(c.httpServer))
         .orDie
     )
   }

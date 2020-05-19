@@ -15,7 +15,7 @@ final class HealthEndpoint[R] {
   import dsl._
 
   private val httpRoutes = HttpRoutes.of[HealthTask] {
-    case GET -> Root => Ok("OK")
+    case GET -> Root ⇒ Ok("OK")
   }
 
   val routes: HttpRoutes[HealthTask] = Router(

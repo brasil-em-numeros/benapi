@@ -1,7 +1,7 @@
 package ben.http.endpoints
 
 import ben.domain.DespesaPublicaExecucao
-import ben.environment.storage.despesaspublicas.{ DespesasPublicasExecucaoStorage => DespesasStorage }
+import ben.environment.storage.despesaspublicas.{ DespesasPublicasExecucaoStorage ⇒ DespesasStorage }
 import io.circe.generic.auto._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
@@ -19,13 +19,13 @@ final class DespesasPublicasEndpoint[R <: DespesasStorage] {
   import dsl._
 
   private val httpRoutes = HttpRoutes.of[DespesasPublicasTask] {
-    case GET -> Root =>
+    case GET -> Root ⇒
       val pipeline: DespesasPublicasTask[DespesasPublicasStream] = DespesasStorage.all
       pipeline
-        .foldM(_ => NotFound(), Ok(_))
+        .foldM(_ ⇒ NotFound(), Ok(_))
 
-    case GET -> Root / IntVar(id) =>
-      DespesasStorage.byId(id).foldM(_ => NotFound(), Ok(_))
+    case GET -> Root / IntVar(id) ⇒
+      DespesasStorage.byId(id).foldM(_ ⇒ NotFound(), Ok(_))
   }
 
   val routes: HttpRoutes[DespesasPublicasTask] = Router(
