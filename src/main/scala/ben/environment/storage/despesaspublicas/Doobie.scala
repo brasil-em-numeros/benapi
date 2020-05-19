@@ -1,7 +1,7 @@
 package ben.environment.storage.despesaspublicas
 
-import ben.domain.DespesaPublicaExecucao
-import ben.environment.storage.despesaspublicas.DespesasPublicasExecucaoStorage.Service
+import ben.domain.despesaspublicas.Execucao
+import ben.environment.storage.despesaspublicas.ExecucaoStorage.Service
 import doobie.implicits._
 import doobie.quill.DoobieContext
 import doobie.util.transactor.Transactor
@@ -13,20 +13,20 @@ private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends 
   val ctx = new DoobieContext.H2(Literal)
   import ctx._
 
-  implicit val schema = schemaMeta[DespesaPublicaExecucao]("ExecucaoDespesasPublicas")
+  implicit val schema = schemaMeta[Execucao]("DespesasPublicasExecucao")
 
-  def all(): fs2.Stream[Task, DespesaPublicaExecucao] =
+  def all(): fs2.Stream[Task, Execucao] =
     ctx
-      .stream(query[DespesaPublicaExecucao])
+      .stream(query[Execucao])
       .transact(xa)
 
-  def byId(id: Long): Task[Option[DespesaPublicaExecucao]] =
+  def byId(id: Long): Task[Option[Execucao]] =
     ctx
       .run(by(id))
       .transact(xa)
       .map(_.headOption)
 
   private def by(id: Long) = quote {
-    query[DespesaPublicaExecucao].filter(_.id == lift(id))
+    query[Execucao].filter(_.id == lift(id))
   }
 }

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS ExecucaoDespesasPublicas(
+CREATE TABLE IF NOT EXISTS DespesasPublicasExecucao(
     id bigint auto_increment,
     lancamento varchar,
     codigoOrgaoSuperior int,
@@ -37,5 +37,8 @@ CREATE TABLE IF NOT EXISTS ExecucaoDespesasPublicas(
     valorRestosAPagarPagos decimal
 )
 
-/* INSERT INTO ExecucaoDespesasPublicas
-  SELECT null, * FROM CSVREAD('/tmp/pdt/202005.csv',null,'fieldSeparator=;') */
+/* INSERT INTO DespesasPublicasExecucao
+  SELECT null, * FROM CSVREAD('/tmp/pdt/202005.csv',null,'fieldSeparator=;')
+
+SHUTDOWN COMPACT
+  */

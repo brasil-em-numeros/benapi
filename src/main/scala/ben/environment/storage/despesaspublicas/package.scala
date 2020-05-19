@@ -1,22 +1,22 @@
 package ben.environment.storage
 
-import ben.domain.DespesaPublicaExecucao
+import ben.domain.despesaspublicas.Execucao
 import zio._
 import zio.macros.accessible
 
 package object despesaspublicas {
 
-  type DespesasPublicasExecucaoStorage = Has[DespesasPublicasExecucaoStorage.Service]
+  type ExecucaoStorage = Has[ExecucaoStorage.Service]
 
   @accessible
-  object DespesasPublicasExecucaoStorage {
+  object ExecucaoStorage {
     trait Service {
-      def all(): fs2.Stream[Task, DespesaPublicaExecucao]
-      def byId(id: Long): Task[Option[DespesaPublicaExecucao]]
+      def all(): fs2.Stream[Task, Execucao]
+      def byId(id: Long): Task[Option[Execucao]]
     }
 
-    val doobie: URLayer[DbTransactor, DespesasPublicasExecucaoStorage] =
-      ZLayer.fromFunction[DbTransactor, DespesasPublicasExecucaoStorage.Service] { dbTransactor =>
+    val doobie: URLayer[DbTransactor, ExecucaoStorage] =
+      ZLayer.fromFunction[DbTransactor, ExecucaoStorage.Service] { dbTransactor ⇒
         Doobie(dbTransactor.get.xa)
       }
   }
