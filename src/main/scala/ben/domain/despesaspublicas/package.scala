@@ -1,6 +1,13 @@
 package ben.domain
 
+import io.circe.Encoder
+import io.circe.generic.semiauto._
+
 package object despesaspublicas {
+
+  object Execucao {
+    implicit val execucaoEncoder: Encoder[Execucao] = deriveEncoder[Execucao]
+  }
 
   final case class Execucao(
     id: Long,

@@ -2,7 +2,6 @@ package ben.http.endpoints
 
 import ben.domain.despesaspublicas.Execucao
 import ben.environment.storage.despesaspublicas.ExecucaoStorage
-import io.circe.generic.auto._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
