@@ -2,7 +2,9 @@ package ben.http.endpoints
 
 import ben.domain.despesaspublicas.Execucao
 import ben.environment.storage.despesaspublicas.ExecucaoStorage
+import io.circe.syntax._
 import org.http4s.HttpRoutes
+import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import zio.interop.catz._
@@ -23,7 +25,7 @@ final class DespesasPublicasEndpoint[R <: ExecucaoStorage] {
     case GET -> Root :? COSQueryParameter(codigo) =>
       val pipeline: DespesasPublicasTask[DespesasPublicasStream] = ExecucaoStorage.byCodigo(codigo)
       pipeline
-        .foldM(_ => NotFound(), Ok(_))
+        .foldM(_ => NotFound(), stream => Ok(stream.map(_.asJson)))
 
     case GET -> Root / LongVar(id) =>
       ExecucaoStorage.byId(id).foldM(_ => NotFound(), Ok(_))
