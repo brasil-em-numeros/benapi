@@ -9,6 +9,7 @@ import cats.implicits._
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.Router
+import org.http4s.server.middleware.GZip
 import org.http4s.{ Request, Response }
 import zio.interop.catz._
 import zio.{ RIO, ZIO }
@@ -21,7 +22,7 @@ object Server {
     ZIO.runtime[AppEnvironment].flatMap { implicit rts ⇒
       val cfg = rts.environment.get[HttpServerConfig]
 
-      BlazeServerBuilder[ServerRIO]
+      BlazeServerBuilder[ServerRIO](rts.platform.executor.asEC)
         .bindHttp(cfg.port, cfg.host)
         .withHttpApp(createRoutes(cfg.path))
         .serve
@@ -34,7 +35,7 @@ object Server {
     val healthRoutes = new HealthEndpoint[AppEnvironment].routes
     val despesasPublicasRoutes = new DespesasPublicasEndpoint[AppEnvironment].routes
 
-    val openRoutes = healthRoutes <+> despesasPublicasRoutes
+    val openRoutes = GZip(healthRoutes <+> despesasPublicasRoutes)
 
     Router[ServerRIO](basePath -> openRoutes).orNotFound
   }
