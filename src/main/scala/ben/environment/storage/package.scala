@@ -15,7 +15,7 @@ package object storage {
     }
 
     val live: URLayer[DbConfiguration, DbTransactor] =
-      ZLayer.fromFunction { env ⇒
+      ZLayer.fromFunction { env =>
         val dbCfg = env.get
 
         new Resource {

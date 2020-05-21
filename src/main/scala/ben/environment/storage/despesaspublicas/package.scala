@@ -16,7 +16,7 @@ package object despesaspublicas {
     }
 
     val doobie: URLayer[DbTransactor, ExecucaoStorage] =
-      ZLayer.fromFunction[DbTransactor, ExecucaoStorage.Service] { dbTransactor ⇒
+      ZLayer.fromFunction[DbTransactor, ExecucaoStorage.Service] { dbTransactor =>
         Doobie(dbTransactor.get.xa)
       }
   }

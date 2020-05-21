@@ -20,13 +20,13 @@ final class DespesasPublicasEndpoint[R <: ExecucaoStorage] {
   object COSQueryParameter extends QueryParamDecoderMatcher[Long]("codigoOrgaoSuperior")
 
   private val httpRoutes = HttpRoutes.of[DespesasPublicasTask] {
-    case GET -> Root :? COSQueryParameter(codigo) ⇒
+    case GET -> Root :? COSQueryParameter(codigo) =>
       val pipeline: DespesasPublicasTask[DespesasPublicasStream] = ExecucaoStorage.byCodigo(codigo)
       pipeline
-        .foldM(_ ⇒ NotFound(), Ok(_))
+        .foldM(_ => NotFound(), Ok(_))
 
-    case GET -> Root / IntVar(id) ⇒
-      ExecucaoStorage.byId(id).foldM(_ ⇒ NotFound(), Ok(_))
+    case GET -> Root / LongVar(id) =>
+      ExecucaoStorage.byId(id).foldM(_ => NotFound(), Ok(_))
   }
 
   val routes: HttpRoutes[DespesasPublicasTask] = Router(

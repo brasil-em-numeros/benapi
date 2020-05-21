@@ -8,7 +8,7 @@ object Main extends App {
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] = {
     val program = for {
-      _ ← Server.runServer
+      _ <- Server.runServer
     } yield 1
 
     program.provideLayer(appEnvironment)
