@@ -13,6 +13,7 @@ package object despesaspublicas {
     trait Service {
       def all(): fs2.Stream[Task, Execucao]
       def byId(id: Long): Task[Option[Execucao]]
+      def byCodigo(codigo: Long): fs2.Stream[Task, Execucao]
     }
 
     val doobie: URLayer[DbTransactor, ExecucaoStorage] =

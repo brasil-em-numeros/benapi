@@ -26,7 +26,16 @@ private[despesaspublicas] final case class Doobie(xa: Transactor[Task]) extends 
       .transact(xa)
       .map(_.headOption)
 
+  def byCodigo(codigo: Long): fs2.Stream[Task, Execucao] =
+    ctx
+      .stream(queryCodigo(codigo))
+      .transact(xa)
+
   private def by(id: Long) = quote {
     query[Execucao].filter(_.id == lift(id))
+  }
+
+  private def queryCodigo(codigo: Long) = quote {
+    query[Execucao].filter(_.codigoOrgaoSuperior.exists(_ == lift(codigo)))
   }
 }

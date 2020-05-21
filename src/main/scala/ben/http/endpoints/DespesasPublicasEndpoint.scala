@@ -17,9 +17,11 @@ final class DespesasPublicasEndpoint[R <: ExecucaoStorage] {
   val dsl = Http4sDsl[DespesasPublicasTask]
   import dsl._
 
+  object COSQueryParameter extends QueryParamDecoderMatcher[Long]("codigoOrgaoSuperior")
+
   private val httpRoutes = HttpRoutes.of[DespesasPublicasTask] {
-    case GET -> Root ⇒
-      val pipeline: DespesasPublicasTask[DespesasPublicasStream] = ExecucaoStorage.all
+    case GET -> Root :? COSQueryParameter(codigo) ⇒
+      val pipeline: DespesasPublicasTask[DespesasPublicasStream] = ExecucaoStorage.byCodigo(codigo)
       pipeline
         .foldM(_ ⇒ NotFound(), Ok(_))
 
