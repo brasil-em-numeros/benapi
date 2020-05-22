@@ -2,10 +2,7 @@
 
 Backend API do brasil-em-numeros
 
-## Rodando a api
-
-Para buildar a aplicação, execute `build/setup.sh`
-- Só é necessário ser executado quando há mudanças
+## Rodando o servidor
 
 Para iniciar o servidor na porta 8080: `./run.sh`
 
